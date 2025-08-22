@@ -32,13 +32,22 @@ const getFirstDay = computed(() => {
   return date
 })
 
+const getLocale = computed(() => {
+  try {
+    Intl.getCanonicalLocales(locale.toString())
+    return locale
+  } catch (err) {
+    return 'ru'
+  }
+})
+
 const getLocaleYear = computed(() => {
-  return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long' }).format(getDate.value)
+  return new Intl.DateTimeFormat(getLocale.value, { year: 'numeric', month: 'long' }).format(getDate.value)
 })
 
 const getLocaleWeeks = computed(() => {
   const date = new Date('2023-01-01')
-  const intl = new Intl.DateTimeFormat(locale, { weekday: 'short' })
+  const intl = new Intl.DateTimeFormat(getLocale.value, { weekday: 'short' })
 
   return Array.from({ length: 7 }, () => {
     date.setDate(date.getDate() + 1)
