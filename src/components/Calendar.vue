@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, type ComputedGetter } from 'vue'
 
 interface CalendarEmits {
   (e: 'day:select', val: { date: Date; day: number; index: number; format: string }): void
@@ -32,12 +32,12 @@ const getFirstDay = computed(() => {
   return date
 })
 
-const getLocale = computed(() => {
+const getLocale = computed<Intl.LocalesArgument>((old) => {
   try {
     Intl.getCanonicalLocales(locale.toString())
     return locale
   } catch (err) {
-    return 'ru'
+    return old
   }
 })
 
